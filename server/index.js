@@ -1,31 +1,35 @@
 import express from "express";
 import dotenv from "dotenv";
 
-//database connection
+// Database connection
 import ConnectDB from "./database/connection";
+
+import Auth from "./api/auth";
 
 dotenv.config();
 
 const zomato = express();
 
 zomato.use(express.json());
+
 zomato.get("/", (req, res) => {
     res.json({
-        message: "Server is Running",
-
+        message: "Server is running",
     });
 });
 
+// /auth/signup
+zomato.use("/auth", Auth);
+
 const PORT = 4000;
+
 zomato.listen(PORT, () => {
     ConnectDB()
         .then(() => {
-            console.log("Server IS Running!!!!");
+            console.log("Server is running !!!");
         })
         .catch((error) => {
-            console.log("Server is Running, but database connection failed...");
+            console.log("Server is running, but database connection failed...");
             console.log(error);
         });
-    console.log("Server is running !!!");
-
 });
